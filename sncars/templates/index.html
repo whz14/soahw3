@@ -6,8 +6,8 @@
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
   </head>
   <body>
-   
-   {% for pr in ColumnNames %}
+   <p>Hello, {{gender}} of age {{age}} </p>
+   {% for pr in pr.ColumnNames %}
    <div> {{pr}} <input type="text" name="property" id = "{{pr}}"></div>
    {% endfor %}
 

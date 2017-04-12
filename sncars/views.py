@@ -8,7 +8,7 @@ from django.http.response import HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 
-headers = {
+face_headers = {
     # Request headers
     'Content-Type': 'application/json',
     'Ocp-Apim-Subscription-Key': '0530ebe8880f4eb493579a6481341c69',
@@ -32,15 +32,23 @@ headers = {'Content-Type': 'application/json',
            'Authorization': ('Bearer ' + api_key)}
 
 
+gender = ""
+age = 0
+
+
 def face_recog(url):
     try:
         conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
         body = {'url': 'http://www.hz11x.com/Article/UploadFiles/200807/2008073012101702.jpg'}
-        conn.request("POST", "/face/v1.0/detect?%s" % params, json.dumps(body), headers)
+        conn.request("POST", "/face/v1.0/detect?%s" % params, json.dumps(body), face_headers)
         response = conn.getresponse()
         data = response.read()
-        print(data)
+        attrs = json.loads(data)[0]['faceAttributes']
         conn.close()
+        global gender, name, age
+        gender = attrs['gender']
+        age = attrs['age']
+        print gender, age
         return data
     except Exception as e:
         print("[Errno {0}] {1}".format(e.errno, e.strerror))
@@ -54,7 +62,6 @@ def uploadImg(request):
         )
         new_img.save()
         face_recog(new_img.img.url)
-        print 'shit'
         return HttpResponseRedirect('/properties')
     return render(request, 'uploadimg.html')
 
@@ -69,9 +76,7 @@ def showImg(request):
 
 
 def fill_properties(request):
-    print 'fuck'
-
-    return render(request, 'index.html', properties)
+    return render(request, 'index.html', {'pr': properties, 'gender': gender, 'age': age})
 
 
 def predict(request):
