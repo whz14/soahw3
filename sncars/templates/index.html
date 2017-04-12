@@ -1,0 +1,52 @@
+
+<html>
+
+  <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  </head>
+  <body>
+   
+   {% for pr in ColumnNames %}
+   <div> {{pr}} <input type="text" name="property" id = "{{pr}}"></div>
+   {% endfor %}
+
+  <div>
+    预测值：<p id = "result"></p>
+  </div>
+  <div >
+    <button type = "button" id="search" onclick="search()">预测</button>
+  </div>
+   
+  </body>
+</html>
+<script type="text/javascript">
+    function search() {
+            var data = {};
+            var flag = true;
+            $("input[name='property']").each(function(){
+                if ($(this).val()==""){
+                    flag = false;                  
+                }
+                data[$(this).attr('id')]=$(this).val();
+              });
+            if (flag == false){
+                alert('you have to fill all the blanks');
+                return;
+            }
+            $.ajax({
+                    type: 'GET',
+                    url: '/predict',
+                    data: data,
+                    dataType: 'json',
+                    success: function(data) {
+                        alert(data['price']);
+                       $("#result").html(data['price']);
+                        
+                    },
+                    error: function(xhr, type) {
+                        alert('server error');
+                    }
+            });
+      }
+</script>

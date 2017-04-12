@@ -15,7 +15,15 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from sncars import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-]
+    url(r'^$', views.uploadImg),
+    url(r'^upload', views.uploadImg),
+    url(r'^show', views.showImg),
+    url(r'^predict/?', views.predict),
+    url(r'^properties/?', views.fill_properties)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
