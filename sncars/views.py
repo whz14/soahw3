@@ -83,7 +83,7 @@ def predict(request):
     print request.GET
     print request.GET.get('make')
     # print request.GET.get('data')
-    l_properties = properties
+    l_properties = {'ColumnNames': ["make", "body-style", "wheel-base", "engine-size", "horsepower", "peak-rpm", "highway-mpg"], }
     values = []
     for cn in l_properties['ColumnNames']:
         print request.GET.get(cn)
