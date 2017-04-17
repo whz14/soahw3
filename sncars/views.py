@@ -83,8 +83,9 @@ def predict(request):
     print request.GET
     print request.GET.get('make')
     # print request.GET.get('data')
+    l_properties = properties
     values = []
-    for cn in properties['ColumnNames']:
+    for cn in l_properties['ColumnNames']:
         print request.GET.get(cn)
         values.append(request.GET.get(cn))
     values.append(u'0')
@@ -101,7 +102,7 @@ def predict(request):
         "GlobalParameters": {
         }
     }
-    pridict_data["Inputs"]["input1"].update(properties)
+    pridict_data["Inputs"]["input1"].update(l_properties)
     # print pridict_data
     pridict_data["Inputs"]["input1"]['ColumnNames'].append('price')
     pridict_data["Inputs"]['input1']['Values'] = [values]
